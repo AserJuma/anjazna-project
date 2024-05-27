@@ -6,6 +6,8 @@ import { NextIntlClientProvider, useMessages } from 'next-intl';
 
 import { AppConfig } from '@/utils/AppConfig';
 
+import useTextDirection from './useTextDirection';
+
 export const metadata: Metadata = {
   icons: [
     {
@@ -40,9 +42,9 @@ export default function RootLayout(props: {
 
   // Using internationalization in Client Components
   const messages = useMessages();
-
+  const direction = useTextDirection(props.params.locale);
   return (
-    <html lang={props.params.locale}>
+    <html lang={props.params.locale} dir={direction}>
       <body>
         <NextIntlClientProvider
           locale={props.params.locale}
@@ -55,7 +57,7 @@ export default function RootLayout(props: {
   );
 }
 
-// Enable edge runtime but you are required to disable the `migrate` function in `src/libs/DB.ts`
+// Enable edge runtime, but you are required to disable the `migrate` function in `src/libs/DB.ts`
 // Unfortunately, this also means it will also disable the automatic migration of the database
 // And, you will have to manually migrate it with `drizzle-kit push`
 // export const runtime = 'edge';
